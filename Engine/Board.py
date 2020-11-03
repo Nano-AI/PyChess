@@ -1,5 +1,6 @@
 from typing import List
 from Engine.Pieces.ImportAll import *
+from Engine.Errors import *
 
 
 class Board:
@@ -28,8 +29,11 @@ class Board:
         return self.board[len(self.board[int(x)]) - int(y) - 1][int(x)]
 
     def move(self, x, y, x1, y1):
+        if self.get_logical_spot(x, y).type == ' ':
+            raise MovingEmptyBox(f"An empty box is trying to be moved at ({x}, {y}).")
         if not self.get_logical_spot(x, y).is_valid_move(x1, y1):
-            return False
+            raise IllegalMove(f"{self.get_logical_spot(x, y)} is trying to move to ({x1}, {y1})."
+                              f"\nIt is currently at ({x}, {y})")
         self.change_logical_spot(x1, y1, self.get_logical_spot(x, y))
         self.change_logical_spot(x, y, Empty(self, x, y))
         if self.get_logical_spot(x1, y1).type == 'p':
@@ -60,3 +64,17 @@ class Board:
                     board[x].append(Empty(self, y, 7 - x))
 
         return board
+
+
+
+"""
+:red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square:
+:red_square:                                                                                                                                   :red_square:                                                                                                                                    
+:red_square:                                                                                                                                   :red_square:  
+:red_square:                                                                                                                                   :red_square:  
+:red_square:                                                                                                                                   :red_square:  
+:red_square:                                                                                                                                   :red_square:
+:red_square:                                                                                                                                   :red_square:  
+:red_square:                                                                                                                                   :red_square:  
+:red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square:  
+"""
