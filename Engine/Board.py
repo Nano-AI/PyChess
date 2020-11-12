@@ -1,10 +1,51 @@
 from typing import List
-from Engine.Pieces.ImportAll import *
+
 from Engine.Errors import *
+from Engine.Pieces.Empty import *
+from Engine.Pieces.Pawn import *
+from Engine.Pieces.Rook import *
+
+
+def get_side(item: str):
+    if item.islower():
+        return 'w'
+    return 'b'
 
 
 class Board:
     def __init__(self):
+        """
+        ----- BOARD KEY -----
+        -- White Key --
+        r - Black Rook
+        h - Black Knight
+        b - Black Bishop
+        q - Black Queen
+        k - Black King
+        p - Black Pawn
+
+        -- Black Key --
+        R - White Rook
+        H - White Knight
+        B - White Bishop
+        Q - White Queen
+        K - Black King
+        P - Black Pawn
+
+        -- Misc --
+        . - Empty Spot
+          - Empty spot
+        """
+        self.board_setup = [
+            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+            ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+            ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r']
+        ]
         self.board: List[List[Piece]] = self.setup_board()
 
     def print_board(self):
@@ -29,11 +70,16 @@ class Board:
         return self.board[len(self.board[int(x)]) - int(y) - 1][int(x)]
 
     def move(self, x, y, x1, y1):
+        try:
+            valid, reason = self.get_logical_spot(x, y).is_valid_move(x1, y1)
+        except Exception as e:
+            print(e)
         if self.get_logical_spot(x, y).type == ' ':
             raise MovingEmptyBox(f"An empty box is trying to be moved at ({x}, {y}).")
-        if not self.get_logical_spot(x, y).is_valid_move(x1, y1):
-            raise IllegalMove(f"{self.get_logical_spot(x, y)} is trying to move to ({x1}, {y1})."
-                              f"\nIt is currently at ({x}, {y})")
+        if not valid:
+            piece = self.get_logical_spot(x, y)
+            raise IllegalMove(f"{piece.type} at ({piece.x}, {piece.y}) is trying to move to ({x1}, {y1})."
+                              f" It is currently at ({x}, {y})\nReason: {reason}")
         self.change_logical_spot(x1, y1, self.get_logical_spot(x, y))
         self.change_logical_spot(x, y, Empty(self, x, y))
         if self.get_logical_spot(x1, y1).type == 'p':
@@ -45,36 +91,27 @@ class Board:
         self.board[len(self.board[x]) - y - 1][x] = value
 
     def setup_board(self):
-        board = [[], [], [], [], [], [], [], []]
-        bottom = [
-            'r', 'h', 'b', 'q', 'k', 'b', 'h', 'r'
-        ]
-        for x in range(len(board)):
-            if x == 1:
-                for y in range(len(board)):
-                    board[x].append(Pawn(self, 'b', y, 7 - x))
-
-            elif x == 6:
-            # elif x == 5:
-                for y in range(len(board)):
-                    board[x].append(Pawn(self, 'w', y, 7 - x))
-
-            else:
-                for y in range(len(board)):
-                    board[x].append(Empty(self, y, 7 - x))
-
+        board = []
+        for y in range(len(self.board_setup)):
+            total = []
+            for x in range(len(self.board_setup[y])):
+                # print(self.board_setup[y][x], get_side(self.board_setup[y][x]), (x, y))
+                total.append(
+                    self.get_piece(
+                        self.board_setup[y][x], get_side(self.board_setup[y][x]), self.convert_to_logical(x, y)
+                    )
+                )
+            board.append(total)
         return board
 
+    def convert_to_logical(self, x, y):
+        return x, len(self.board_setup) - y - 1
 
-
-"""
-:red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square:
-:red_square:                                                                                                                                   :red_square:                                                                                                                                    
-:red_square:                                                                                                                                   :red_square:  
-:red_square:                                                                                                                                   :red_square:  
-:red_square:                                                                                                                                   :red_square:  
-:red_square:                                                                                                                                   :red_square:
-:red_square:                                                                                                                                   :red_square:  
-:red_square:                                                                                                                                   :red_square:  
-:red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square: :red_square:  
-"""
+    def get_piece(self, s, side, pos):
+        x, y = pos
+        # print(s, side, pos)
+        if s.lower() == 'p':
+            return Pawn(self, side, x, y)
+        if s.lower() == 'r':
+            return Rook(self, side, x, y)
+        return Empty(self, x, y)

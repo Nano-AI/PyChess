@@ -12,10 +12,22 @@ class Controller:
             board.print_board()
             spot = input("Enter piece to select: ").split(" ")
             move_spot = input("Enter spot to move: ").split(" ")
+            # print(
+            #     board.get_logical_spot(
+            #         int(spot[0]), int(spot[1])
+            #     ), board.get_logical_spot(
+            #         int(move_spot[0]), int(move_spot[1])
+            #     )
+            # )
+            # print(board.get_logical_spot(
+            #         int(spot[0]), int(spot[1])
+            #     ).x, board.get_logical_spot(
+            #         int(spot[0]), int(spot[1])
+            #     ).y)
             try:
                 board.move(int(spot[0]), int(spot[1]), int(move_spot[0]), int(move_spot[1]))
-            except IllegalMove:
-                print("You entered an illegal move!")
+            except IllegalMove as e:
+                print(f"You entered an illegal move! {e}")
             except MovingEmptyBox:
                 print("You're trying to move an empty box.")
         # board.move(0, 5, 0, 6)
