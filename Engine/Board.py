@@ -76,7 +76,7 @@ class Board:
             print(e)
         if self.get_logical_spot(x, y).type == ' ':
             raise MovingEmptyBox(f"An empty box is trying to be moved at ({x}, {y}).")
-        if self.get_logical_spot(self.get_logical_spot(x1, y1).type == 'k'):
+        if self.get_logical_spot(x1, y1).type == 'k':
             raise
         if not valid:
             piece = self.get_logical_spot(x, y)
