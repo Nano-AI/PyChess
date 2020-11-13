@@ -37,8 +37,8 @@ class Board:
           - Empty spot
         """
         self.board_setup = [
-            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
             ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
+            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
@@ -114,6 +114,6 @@ class Board:
         # print(s, side, pos)
         if s.lower() == 'p':
             return Pawn(self, side, x, y)
-        if s.lower() == 'r':
-            return Rook(self, side, x, y)
+        # if s.lower() == 'r':
+        #     return Rook(self, side, x, y)
         return Empty(self, x, y)
