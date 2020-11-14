@@ -1,3 +1,2 @@
 if __name__ == '__main__':
-    pass
-    # Controller()
+    import GUI.main
