@@ -30,5 +30,4 @@ def DrawBoard(game_display, size):
 
         cnt -= 1
 
-    pygame.display.update()
     return centers

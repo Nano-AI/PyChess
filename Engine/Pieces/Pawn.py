@@ -29,6 +29,9 @@ class Pawn(Piece):
                 return False, "Forgot what this does"
             if self.board.get_logical_spot(x, y).type == ' ':
                 return False, "Trying to capture an empty spot"
+        self.start_move = False
+        if self.board.get_logical_spot(x, y).side == self.side:
+            return False, "Trying to capture your own piece"
         return True, "Success"
 
 
