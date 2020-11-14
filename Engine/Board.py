@@ -70,14 +70,16 @@ class Board:
         return self.board[len(self.board[int(x)]) - int(y) - 1][int(x)]
 
     def move(self, x, y, x1, y1):
+        valid = False
+        reason = ""
         try:
             valid, reason = self.get_logical_spot(x, y).is_valid_move(x1, y1)
         except Exception as e:
-            print(e)
+            raise Exception(e)
         if self.get_logical_spot(x, y).type == ' ':
             raise MovingEmptyBox(f"An empty box is trying to be moved at ({x}, {y}).")
         if self.get_logical_spot(x1, y1).type == 'k':
-            raise
+            raise Exception("King is trying to be captured")
         if not valid:
             piece = self.get_logical_spot(x, y)
             raise IllegalMove(f"{piece.type} at ({piece.x}, {piece.y}) is trying to move to ({x1}, {y1})."
@@ -114,6 +116,6 @@ class Board:
         # print(s, side, pos)
         if s.lower() == 'p':
             return Pawn(self, side, x, y)
-        # if s.lower() == 'r':
-        #     return Rook(self, side, x, y)
+        if s.lower() == 'r':
+            return Rook(self, side, x, y)
         return Empty(self, x, y)

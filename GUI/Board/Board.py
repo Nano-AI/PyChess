@@ -46,12 +46,10 @@ class BoardGUI:
                                         x1, y1 = self.convert_to_logical(self.moving_to)
                                         try:
                                             self.board.move(x, y, x1, y1)
-                                            self.board.print_board()
                                             self.update_board()
                                             # self.screen.blit(self.piece_images[i][j], self.moving_to)
-                                            print("done moving")
                                         except Exception as e:
-                                            print(e)
+                                            print("Sorry, but the move you played is illegal.\n", e)
                                     self.selected = None
                                     self.moving_to = None
                                 elif self.selected is None and self.moving_to is not None:
@@ -116,7 +114,7 @@ class BoardGUI:
                     except FileNotFoundError:
                         print(f"Image path not found: {piece_image_path}")
                     except Exception as e:
-                        raise e
+                        raise Exception(e)
                     piece.set_alpha(0)
 
                 piece = pygame.transform.scale(piece, (int(self.height / 8 / 1.25), int(self.height / 8 / 1.25)))
@@ -136,6 +134,8 @@ class BoardGUI:
                 side_p += 'Black/'
             if piece.lower() == 'p':
                 return self.image_path + side_p + 'Pawn.png'
+            if piece.lower() == 'r':
+                return self.image_path + side_p + 'Rook.png'
             return None
         if isinstance(piece, Piece):
             if piece.side == 'w':
@@ -144,6 +144,8 @@ class BoardGUI:
                 side_p += 'Black/'
             if piece.type == 'p':
                 return self.image_path + side_p + 'Pawn.png'
+            if piece.type == 'r':
+                return self.image_path + side_p + 'Rook.png'
             return None
 
     def convert_to_logical(self, x_y: tuple):
