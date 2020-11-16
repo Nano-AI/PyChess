@@ -37,7 +37,7 @@ class BoardGUI:
                     for i in range(len(self.piece_rectangles)):
                         for j in range(len(self.piece_rectangles[i])):
                             if self.piece_rectangles[i][j] is not None and self.piece_rectangles[i][j].collidepoint(x, y):
-                                if self.selected is None:
+                                if self.selected is None and self.board.board[i][j].type != ' ':
                                     self.selected = (i, j)
                                 elif self.selected is not None and self.moving_to is None:
                                     self.moving_to = (i, j)
@@ -57,9 +57,8 @@ class BoardGUI:
                                 elif self.selected is not None and self.moving_to is not None:
                                     self.selected = None
                                     self.moving_to = None
-                                else:
-                                    raise Exception("Somehow the selected and moving spot is not working?")
-                                print(self.selected, self.moving_to)
+                                # else:
+                                #     raise Exception("Somehow the selected and moving spot is not working?")
 
                 if not running:
                     pygame.quit()

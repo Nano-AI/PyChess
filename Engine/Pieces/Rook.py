@@ -8,36 +8,30 @@ class Rook(Piece):
         self.start_move = True
 
     def is_valid_move(self, x, y):
-        if x != self.x and y != self.y:  # If the user is going horizontally and vertically
-            return False, "You can't move vertically and horizontally at the same time!"
-
-        if self.board.get_logical_spot(x, y).side == self.side:  # Stops from capturing your own piece
-            return False, "Capturing own piece"
         if x == self.x and y == self.y:
-            return False, "Staying still"
-        if x != self.x:  # Moving horizontally
-            if x - self.x > 0:  # Moving right
-                for i in range(self.x + 1, x):
-                    if self.board.board[y][i].type != ' ':
-                        return False, f"{self.board.board[y][i].type} at position ({x}, {y}) in the way of the rook " \
-                                      f"while going right."
-            if x - self.x < 0:  # Moving left
-                for i in range(x - self.x):
-                    if self.board.board[y][x - i].type != ' ':
-                        return False, f"{self.board.board[y][x - i].type} at position ({x}, {y}) in the way of the rook " \
-                                      f"while going left."
+            return False, "Trying to move diagonally"
 
-        elif y != self.y:  # Moving vertically
-            # print(y, self.y)
-            if y - self.y > 0:  # Moving up
-                for i in range(self.y, y - 1):
-                    print(self.board.board[i][y].type)
-                    if self.board.board[i][y].type != ' ':
-                        return False, "Something in the way of the rook while going up."
-            if y - self.y < 0:  # Moving down
-                for i in range(y, self.y):
-                    print(self.board.board[i][y].type)
-                    if self.board.board[i][y].type != ' ':
-                        return False, "Something in the way of the rook while going down."
+        if x == self.x:  # Moving up/down
+            dy = 1 if self.y < y else -1
+            i = self.y + dy
+            while i != y:
+                print(i)
+                if self.board.get_logical_spot(self.x, i).type != ' ':
+                    return False, "Object blocking way"
+                i += dy
+
+        elif y == self.y:  # Moving right/left
+            dx = 1 if self.x < x else -1
+            print(dx)
+            i = self.x + dx
+            print(i)
+            while i != x:
+                print(i)
+                if self.board.get_logical_spot(i, self.y).type != ' ':
+                    return False, "Object blocking way"
+                i += dx
+
+        else:
+            return False, "Moving dumb way"
 
         return True, "Success"
