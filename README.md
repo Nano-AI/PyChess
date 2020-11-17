@@ -6,12 +6,12 @@ Run main.py
 
 ## Things to add
 -[x] Game UI
--[ ] Turn system
+-[x] Turn system
 -[x] Pawns
--[ ] Knights
+-[x] Knights
 -[X] Bishops
 -[X] Rooks 
--[ ] Queen
+-[x] Queen
 -[ ] King
 -[ ] Promotion
 -[ ] Better UI

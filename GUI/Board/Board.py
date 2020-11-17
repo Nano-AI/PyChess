@@ -20,8 +20,10 @@ class BoardGUI:
         self.selected = None
         self.moving_to = None
 
+        self.turn = 'w'
+
         self.piece_images, self.piece_rectangles = None, None
-        self.centers = DrawBoard(self.screen, self.size)
+        self.centers = DrawBoard(self.screen, self.size, self.selected)
         pygame.display.set_caption("Chess - Nano-AI")
 
     def run(self):
@@ -38,7 +40,8 @@ class BoardGUI:
                         for j in range(len(self.piece_rectangles[i])):
                             if self.piece_rectangles[i][j] is not None and self.piece_rectangles[i][j].collidepoint(x,
                                                                                                                     y):
-                                if self.selected is None and self.board.board[i][j].type != ' ':
+                                if self.selected is None and self.board.board[i][j].type != ' ' and \
+                                        self.board.board[i][j].side == self.turn:
                                     self.selected = (i, j)
                                 elif self.selected is not None and self.moving_to is None:
                                     self.moving_to = (i, j)
@@ -47,6 +50,10 @@ class BoardGUI:
                                         x1, y1 = self.convert_to_logical(self.moving_to)
                                         try:
                                             self.board.move(x, y, x1, y1)
+                                            if self.turn == 'w':
+                                                self.turn = 'b'
+                                            else:
+                                                self.turn = 'w'
                                             self.update_board()
                                         except Exception as e:
                                             print("Sorry, but the move you played is illegal.\n", e)
@@ -57,15 +64,16 @@ class BoardGUI:
                                 elif self.selected is not None and self.moving_to is not None:
                                     self.selected = None
                                     self.moving_to = None
+                    self.update_board()
 
                 if not running:
                     pygame.quit()
                     quit()
                 pygame.display.update()
-            self.clock.tick(60)
+            self.clock.tick(120)
 
     def update_board(self):
-        DrawBoard(self.screen, self.size)
+        DrawBoard(self.screen, self.size, self.selected)
         for x in range(len(self.piece_images)):
             for y in range(len(self.piece_images[x])):
                 self.piece_images[x][y].set_alpha(0)
