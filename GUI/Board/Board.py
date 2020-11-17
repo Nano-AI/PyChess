@@ -33,7 +33,6 @@ class BoardGUI:
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    # print(self.board.print_board())
                     x, y = event.pos
                     for i in range(len(self.piece_rectangles)):
                         for j in range(len(self.piece_rectangles[i])):
@@ -48,7 +47,6 @@ class BoardGUI:
                                         try:
                                             self.board.move(x, y, x1, y1)
                                             self.update_board()
-                                            # self.screen.blit(self.piece_images[i][j], self.moving_to)
                                         except Exception as e:
                                             print("Sorry, but the move you played is illegal.\n", e)
                                     self.selected = None
@@ -58,8 +56,6 @@ class BoardGUI:
                                 elif self.selected is not None and self.moving_to is not None:
                                     self.selected = None
                                     self.moving_to = None
-                                # else:
-                                #     raise Exception("Somehow the selected and moving spot is not working?")
 
                 if not running:
                     pygame.quit()
@@ -138,6 +134,8 @@ class BoardGUI:
                 return self.image_path + side_p + 'Rook.png'
             if piece.lower() == 'b':
                 return self.image_path + side_p + 'Bishop.png'
+            if piece.lower() == 'h':
+                return self.image_path + side_p + 'Knight.png'
             return None
         if isinstance(piece, Piece):
             if piece.side == 'w':
@@ -150,6 +148,8 @@ class BoardGUI:
                 return self.image_path + side_p + 'Bishop.png'
             if piece.type == 'r':
                 return self.image_path + side_p + 'Rook.png'
+            if piece.type == 'h':
+                return self.image_path + side_p + 'Knight.png'
             return None
 
     def convert_to_logical(self, x_y: tuple):

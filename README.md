@@ -4,10 +4,6 @@ Chess in Python. (<i>The title explains itself</i>)
 ## How to run
 I have to fix this, b
 
-## List of working things:
-- Pawns
-- Game UI
-
 ## Things to add
 -[x] Game UI
 -[ ] Turn system

@@ -5,6 +5,7 @@ from Engine.Pieces.Empty import *
 from Engine.Pieces.Pawn import *
 from Engine.Pieces.Rook import *
 from Engine.Pieces.Bishop import *
+from Engine.Pieces.Knight import *
 
 
 def get_side(item: str):
@@ -100,7 +101,6 @@ class Board:
         for y in range(len(self.board_setup)):
             total = []
             for x in range(len(self.board_setup[y])):
-                # print(self.board_setup[y][x], get_side(self.board_setup[y][x]), (x, y))
                 total.append(
                     self.get_piece(
                         self.board_setup[y][x], get_side(self.board_setup[y][x]), self.convert_to_logical(x, y)
@@ -120,4 +120,6 @@ class Board:
             return Rook(self, side, x, y)
         if s.lower() == 'b':
             return Bishop(self, side, x, y)
+        if s.lower() == 'h':
+            return Knight(self, side, x, y)
         return Empty(self, x, y)
