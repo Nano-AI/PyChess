@@ -7,9 +7,13 @@ class Knight(Piece):
         self.type = 'h'
 
     def is_valid_move(self, x, y):
+        dy = y - self.y
+        dx = x - self.x
         slope = (y - self.y) / (x - self.x)
         if self.board.get_logical_spot(x, y).side == self.side:
             return False, "Capturing own piece"
+        if abs(dy) > 2 or abs(dx) > 2:
+            return False, "The move was too far"
         if abs(slope) != 2 and abs(slope) != 0.5:
             return False, "Not valid move"
         return True, "Success"
