@@ -4,6 +4,7 @@ from Engine.Errors import *
 from Engine.Pieces.Empty import *
 from Engine.Pieces.Pawn import *
 from Engine.Pieces.Rook import *
+from Engine.Pieces.Bishop import *
 
 
 def get_side(item: str):
@@ -113,9 +114,10 @@ class Board:
 
     def get_piece(self, s, side, pos):
         x, y = pos
-        # print(s, side, pos)
         if s.lower() == 'p':
             return Pawn(self, side, x, y)
         if s.lower() == 'r':
             return Rook(self, side, x, y)
+        if s.lower() == 'b':
+            return Bishop(self, side, x, y)
         return Empty(self, x, y)

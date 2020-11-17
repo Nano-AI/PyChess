@@ -33,6 +33,7 @@ class BoardGUI:
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    # print(self.board.print_board())
                     x, y = event.pos
                     for i in range(len(self.piece_rectangles)):
                         for j in range(len(self.piece_rectangles[i])):
@@ -135,6 +136,8 @@ class BoardGUI:
                 return self.image_path + side_p + 'Pawn.png'
             if piece.lower() == 'r':
                 return self.image_path + side_p + 'Rook.png'
+            if piece.lower() == 'b':
+                return self.image_path + side_p + 'Bishop.png'
             return None
         if isinstance(piece, Piece):
             if piece.side == 'w':
@@ -143,6 +146,8 @@ class BoardGUI:
                 side_p += 'Black/'
             if piece.type == 'p':
                 return self.image_path + side_p + 'Pawn.png'
+            if piece.type == 'b':
+                return self.image_path + side_p + 'Bishop.png'
             if piece.type == 'r':
                 return self.image_path + side_p + 'Rook.png'
             return None
