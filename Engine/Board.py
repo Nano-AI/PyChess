@@ -6,6 +6,7 @@ from Engine.Pieces.Pawn import *
 from Engine.Pieces.Rook import *
 from Engine.Pieces.Bishop import *
 from Engine.Pieces.Knight import *
+from Engine.Pieces.Queen import *
 
 
 def get_side(item: str):
@@ -122,4 +123,6 @@ class Board:
             return Bishop(self, side, x, y)
         if s.lower() == 'h':
             return Knight(self, side, x, y)
+        if s.lower() == 'q':
+            return Queen(self, side, x, y)
         return Empty(self, x, y)

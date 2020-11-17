@@ -5,7 +5,6 @@ class Bishop(Piece):
     def __init__(self, board, side: chr, x: int, y: int):
         super().__init__(board, side, x, y)
         self.type = 'b'
-        self.start_move = True
 
     def is_valid_move(self, x, y):
         if self.board.get_logical_spot(x, y).side == self.side:

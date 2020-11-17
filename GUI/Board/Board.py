@@ -36,7 +36,8 @@ class BoardGUI:
                     x, y = event.pos
                     for i in range(len(self.piece_rectangles)):
                         for j in range(len(self.piece_rectangles[i])):
-                            if self.piece_rectangles[i][j] is not None and self.piece_rectangles[i][j].collidepoint(x, y):
+                            if self.piece_rectangles[i][j] is not None and self.piece_rectangles[i][j].collidepoint(x,
+                                                                                                                    y):
                                 if self.selected is None and self.board.board[i][j].type != ' ':
                                     self.selected = (i, j)
                                 elif self.selected is not None and self.moving_to is None:
@@ -122,35 +123,36 @@ class BoardGUI:
         return pieces_images, rectangles
 
     def get_image(self, piece):
-        side_p = ''
+        piece_name = ""
+        if isinstance(piece, str):
+            piece_name = piece.lower()
+        if isinstance(piece, Piece):
+            piece_name = piece.type
+        pieces = {
+            'p': 'Pawn.png',
+            'r': 'Rook.png',
+            'b': 'Bishop.png',
+            'h': 'Knight.png',
+            'q': 'Queen.png'
+        }
+        try:
+            return self.get_image_path(piece) + pieces[piece_name]
+        except KeyError:
+            pass
+
+    def get_image_path(self, piece):
+        side_p = ""
         if isinstance(piece, str):
             if piece.islower():
                 side_p += 'White/'
             else:
                 side_p += 'Black/'
-            if piece.lower() == 'p':
-                return self.image_path + side_p + 'Pawn.png'
-            if piece.lower() == 'r':
-                return self.image_path + side_p + 'Rook.png'
-            if piece.lower() == 'b':
-                return self.image_path + side_p + 'Bishop.png'
-            if piece.lower() == 'h':
-                return self.image_path + side_p + 'Knight.png'
-            return None
         if isinstance(piece, Piece):
             if piece.side == 'w':
                 side_p = 'White/'
             else:
                 side_p += 'Black/'
-            if piece.type == 'p':
-                return self.image_path + side_p + 'Pawn.png'
-            if piece.type == 'b':
-                return self.image_path + side_p + 'Bishop.png'
-            if piece.type == 'r':
-                return self.image_path + side_p + 'Rook.png'
-            if piece.type == 'h':
-                return self.image_path + side_p + 'Knight.png'
-            return None
+        return self.image_path + side_p
 
     def convert_to_logical(self, x_y: tuple):
         x, y = x_y
