@@ -13,8 +13,8 @@ I have to fix this, b
 -[ ] Turn system
 -[x] Pawns
 -[ ] Knights
--[ ] Bishops
--[ ] Rooks 
+-[X] Bishops
+-[X] Rooks 
 -[ ] Queen
 -[ ] King
 -[ ] Promotion

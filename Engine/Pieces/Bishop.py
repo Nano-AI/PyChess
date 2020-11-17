@@ -1,5 +1,4 @@
 from Engine.Pieces.Piece import Piece
-import math
 
 
 class Bishop(Piece):
@@ -21,12 +20,8 @@ class Bishop(Piece):
         dy = (y - self.y)
         dx = (x - self.x)
 
-        slope = dy / dx
-
         ud = 1 if dy > 0 else -1
         rl = 1 if dx > 0 else -1
-
-        i = 0
 
         if dy > 0:  # Moving up
             for i in range(1, abs(dx)):
