@@ -18,10 +18,12 @@ you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 - [X] Rooks 
 - [x] Queen
 - [ ] King
+- [ ] Check detection
+- [ ] Check**mate** detection
 - [ ] Promotion
 - [ ] Better UI
 - [ ] En Passant
-- [ ] Dots to show where you can move
+- [x] Dots to show where you can move
 
 ### Things to do
 - [ ] Clean up Pawn.py
