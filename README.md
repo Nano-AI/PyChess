@@ -2,9 +2,12 @@
 Chess in Python. (<i>The title explains itself</i>)
 
 Preview:
+![Chess board on startup](https://raw.githubusercontent.com/Nano-AI/Chess/master/GitHubImages/Display_Image_1.JPG?raw=true)
+![Basic Chess Opening](https://raw.githubusercontent.com/Nano-AI/Chess/master/GitHubImages/Display_Image_2.JPG)
 
-## How to run
-Run main.py
+## Setting up and running
+Make sure you have Python 3 installed, then open the folder in a terminal and run `pip install -r requirements.txt` if 
+you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 
 ## Things to add
 -[x] Game UI
