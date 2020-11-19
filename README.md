@@ -10,22 +10,22 @@ Make sure you have Python 3 installed, then open the folder in a terminal and ru
 you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 
 ## Things to add
--[x] Game UI
--[x] Turn system
--[x] Pawns
--[x] Knights
--[X] Bishops
--[X] Rooks 
--[x] Queen
--[ ] King
--[ ] Promotion
--[ ] Better UI
--[ ] En Passant
--[ ] Dots to show where you can move
+- [x] Game UI
+- [x] Turn system
+- [x] Pawns
+- [x] Knights
+- [X] Bishops
+- [X] Rooks 
+- [x] Queen
+- [ ] King
+- [ ] Promotion
+- [ ] Better UI
+- [ ] En Passant
+- [ ] Dots to show where you can move
 
 ### Things to do
--[ ] Clean up Pawn.py
--[ ] Fix random bugs
+- [ ] Clean up Pawn.py
+- [ ] Fix random bugs
 
 ## Credits
 - Chess piece images from here: [Wikipedia Commons](https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent)
