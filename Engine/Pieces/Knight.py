@@ -9,7 +9,12 @@ class Knight(Piece):
     def is_valid_move(self, x, y):
         dy = y - self.y
         dx = x - self.x
-        slope = (y - self.y) / (x - self.x)
+        try:
+            slope = (y - self.y) / (x - self.x)
+        except ZeroDivisionError:
+            return False, "Vertical movement"
+        except Exception as e:
+            raise e
         if self.board.get_logical_spot(x, y).side == self.side:
             return False, "Capturing own piece"
         if abs(dy) > 2 or abs(dx) > 2:

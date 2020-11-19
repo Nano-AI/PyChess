@@ -1,6 +1,8 @@
 # Chess
 Chess in Python. (<i>The title explains itself</i>)
 
+Preview:
+
 ## How to run
 Run main.py
 
@@ -17,6 +19,10 @@ Run main.py
 -[ ] Better UI
 -[ ] En Passant
 -[ ] Dots to show where you can move
+
+### Things to do
+-[ ] Clean up Pawn.py
+-[ ] Fix random bugs
 
 ## Credits
 - Chess piece images from here: [Wikipedia Commons](https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent)

@@ -19,7 +19,6 @@ class Pawn(Piece):
         if self.x == x and self.board.get_logical_spot(x, y).type != ' ':  # Checks if move will crash
             return False, "Move will crash into another piece"             # into another piece
         if self.x != x and self.y == y:  # Stops pawn from moving directly right and left
-            print(self.x, self.y, x, y)
             return False, "Pawn is moving directly left or right"
         if self.x - x > 1 or self.x - x < -1:
             if self.y == y:
@@ -31,7 +30,12 @@ class Pawn(Piece):
                 return False, "Trying to capture an empty spot"
         if self.board.get_logical_spot(x, y).side == self.side:
             return False, "Trying to capture your own piece"
-        self.start_move = False
+        if self.board.get_logical_spot(x, y).type == ' ' and x != self.x:
+            return False, "Moving to narnia"
+        if abs(self.x - x) > 1 or abs(self.y - y) > 2:
+            return False, "Moving to narnia"
+        if abs(self.y - y) > 1 and not self.start_move:
+            return False, "Moving to narnia"
         return True, "Success"
 
 

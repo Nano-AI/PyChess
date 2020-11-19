@@ -1,6 +1,7 @@
 from Engine.Board import *
 from GUI.Board.DrawBoard import *
 import pygame
+from Engine.Errors import *
 
 
 class BoardGUI:
@@ -14,7 +15,7 @@ class BoardGUI:
         self.size = (self.width, self.height) = (
             int(self.screen_info.current_w * 1), int(self.screen_info.current_h * 1))
 
-        self.screen = pygame.display.set_mode((int(self.height / 1.25), int(self.height / 1.25)))
+        self.screen = pygame.display.set_mode((int(self.height / 1.25) + int(self.height / 4), int(self.height / 1.25)))
         self.clock = pygame.time.Clock()
 
         self.selected = None
@@ -23,7 +24,7 @@ class BoardGUI:
         self.turn = 'w'
 
         self.piece_images, self.piece_rectangles = None, None
-        self.centers = DrawBoard(self.screen, self.size, self.selected)
+        self.centers = DrawBoard(self.screen, self.size, self.selected, self.turn)
         pygame.display.set_caption("Chess - Nano-AI")
 
     def run(self):
@@ -48,6 +49,8 @@ class BoardGUI:
                                     if self.selected != self.moving_to:
                                         x, y = self.convert_to_logical(self.selected)
                                         x1, y1 = self.convert_to_logical(self.moving_to)
+                                        # print(f"Selected: {self.selected}, {(x, y)} Moving To: {self.moving_to},
+                                        # {x1, y1}")
                                         try:
                                             self.board.move(x, y, x1, y1)
                                             if self.turn == 'w':
@@ -73,7 +76,23 @@ class BoardGUI:
             self.clock.tick(120)
 
     def update_board(self):
-        DrawBoard(self.screen, self.size, self.selected)
+        if self.selected is not None:
+            sx, sy = self.selected
+            # possible_moves = self.board.get_logical_spot(sx, sy).get_possible_spots()
+            spot = self.board.board[sx][sy]
+            possible_moves = []
+            for i in range(0, 8):
+                for j in range(0, 8):
+                    ii, ij = self.convert_to_logical((i, j))
+                    try:
+                        valid, reason = spot.is_valid_move(ii, ij)
+                        if valid:
+                            possible_moves.append((i, j))
+                    except Exception:
+                        pass
+            DrawBoard(self.screen, self.size, self.selected, self.turn, moves=possible_moves)
+        else:
+            DrawBoard(self.screen, self.size, self.selected, self.turn)
         for x in range(len(self.piece_images)):
             for y in range(len(self.piece_images[x])):
                 self.piece_images[x][y].set_alpha(0)
@@ -164,4 +183,5 @@ class BoardGUI:
 
     def convert_to_logical(self, x_y: tuple):
         x, y = x_y
+        # print(f"x, y: {x_y} new spot: ({y}, {len(self.board.board_setup[0]) - x - 1})")
         return y, len(self.board.board_setup[0]) - x - 1
