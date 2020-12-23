@@ -27,21 +27,4 @@ class Queen(Piece):
         return True, "Success"
 
     def get_guarding_spots(self):
-        spots = []
-        for x in range(0, len(self.board.board)):
-            spots.append([])
-            for y in range(0, len(self.board.board[x])):
-                spots[x].append(0)
-
-        rook_spots = Rook(self.board, self.side, self.x, self.y).get_guarding_spots()
-        bishop_spots = Bishop(self.board, self.side, self.x, self.y).get_guarding_spots()
-
-        for x in range(len(spots)):
-            for y in range(len(spots[x])):
-                spots[x][y] = 1 if rook_spots[x][y] == 1 or bishop_spots[x][y] == 1 else 0
-
-        print('-----------')
-        for arr in spots:
-            print(arr)
-
-        return spots
+        return None

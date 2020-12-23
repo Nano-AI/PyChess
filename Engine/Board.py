@@ -38,6 +38,7 @@ class Board:
         . - Empty Spot
           - Empty spot
         """
+
         # self.board_setup = [
         #     ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
         #     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
@@ -48,15 +49,16 @@ class Board:
         #     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
         #     ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r']
         # ]
+
         self.board_setup = [
-            ['R', 'H', 'B', '.', 'K', '.', 'H', 'R'],
-            ['P', 'P', 'P', '.', '.', '.', 'P', 'P'],
+            ['.', '.', '.', '.', 'K', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['r', '.', '.', '.', 'p', 'k', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['p', 'p', 'p', '.', '.', '.', 'p', 'p'],
-            ['r', 'h', 'b', '.', 'k', '.', 'h', 'r']
+            ['.', '.', '.', '.', 'k', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.']
         ]
         self.board: List[List[Piece]] = self.setup_board()
 
@@ -89,9 +91,9 @@ class Board:
         except Exception as e:
             raise Exception(e)
         if self.get_logical_spot(x, y).type == ' ':
-            raise MovingEmptyBox(f"An empty box is trying to be moved at ({x}, {y}).")
+            raise IllegalMove(f"An empty box is trying to be moved at ({x}, {y}).")
         if self.get_logical_spot(x1, y1).type == 'k':
-            raise Exception("King is trying to be captured")
+            raise IllegalMove("King is trying to be captured")
         if not valid:
             piece = self.get_logical_spot(x, y)
             raise IllegalMove(f"{piece.type} at ({piece.x}, {piece.y}) is trying to move to ({x1}, {y1})."

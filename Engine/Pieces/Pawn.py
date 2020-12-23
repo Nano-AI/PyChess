@@ -44,20 +44,13 @@ class Pawn(Piece):
 
     def get_guarding_spots(self):
         spots = []
-        for x in range(0, len(self.board.board)):
-            spots.append([])
-            for y in range(0, len(self.board.board[x])):
-                spots[x].append(0)
+        y = 1 if self.side == 'w' else -1
 
-        dy = 1 if self.side == 'w' else -1
-        spots[self.y + dy][self.x + 1] = 1
-        spots[self.y + dy][self.x - 1] = 1
+        if 0 <= self.y + y <= 8:
+            if 0 <= self.x + 1 <= 8:
+                spots.append((self.x + 1, self.y + y))
 
-        return [ele for ele in reversed(spots)]
+            if 0 <= self.x - 1 <= 8:
+                spots.append((self.x - 1, self.y + y))
 
-
-"""
-Things to fix:
-Pawn can go directly right and left - Fixed I think
-Pawn can move diagonally without capturing a piece - Fixed I think
-"""
+        return spots

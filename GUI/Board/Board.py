@@ -1,13 +1,14 @@
 from Engine.Board import *
 from GUI.Board.DrawBoard import *
 import pygame
+import os
 from Engine.Errors import *
 
 
 class BoardGUI:
     def __init__(self):
         self.board = Board()
-        self.image_path = "Pieces/"
+        self.image_path = "GUI/Pieces/"
         self.default_piece_image = self.image_path + 'White/Pawn.png'
 
         pygame.init()
@@ -54,17 +55,18 @@ class BoardGUI:
                                     if self.selected != self.moving_to:
                                         x, y = self.convert_to_logical(self.selected)
                                         x1, y1 = self.convert_to_logical(self.moving_to)
-                                        # print(f"Selected: {self.selected}, {(x, y)} Moving To: {self.moving_to},
-                                        # {x1, y1}")
                                         try:
                                             self.board.move(x, y, x1, y1)
-                                            if self.turn == 'w':
-                                                self.turn = 'b'
-                                            else:
-                                                self.turn = 'w'
+                                            self.turn = 'b' if self.turn == 'w' else 'w'
+                                            # if self.turn == 'w':
+                                            #     self.turn = 'b'
+                                            # else:
+                                            #     self.turn = 'w'
                                             self.update_board()
+                                        except IllegalMove:
+                                            print("Sorry, but the move you played is illegal.\n")
                                         except Exception as e:
-                                            print("Sorry, but the move you played is illegal.\n", e)
+                                            raise e
                                     self.selected = None
                                     self.moving_to = None
                                 elif self.selected is None and self.moving_to is not None:
@@ -107,14 +109,14 @@ class BoardGUI:
                     try:
                         piece = pygame.image.load(piece_image_path)
                     except FileNotFoundError:
-                        print(f"Image path not found: {piece_image_path}")
+                        raise FileNotFoundError(f"Image path not found (update board): {piece_image_path}")
                     except Exception as e:
                         raise e
                 else:
                     try:
                         piece = pygame.image.load(self.default_piece_image)
                     except FileNotFoundError:
-                        print(f"Image path not found: {piece_image_path}")
+                        raise FileNotFoundError(f"Image path not found (update board): {piece_image_path}")
                     except Exception as e:
                         raise e
                     piece.set_alpha(0)
@@ -132,18 +134,20 @@ class BoardGUI:
                 piece = None
                 if piece_image_path is not None:
                     try:
-                        piece = pygame.image.load(piece_image_path)
+                        path = os.path.abspath(piece_image_path)
+                        piece = pygame.image.load(path)
                     except FileNotFoundError:
-                        print(f"Image path not found: {piece_image_path}")
+                        raise FileNotFoundError(f"Image path not found (map_board): {path}")
                     except Exception as e:
                         raise e
                 else:
                     try:
-                        piece = pygame.image.load(self.default_piece_image)
+                        path = os.path.abspath(self.default_piece_image)
+                        piece = pygame.image.load(path)
                     except FileNotFoundError:
-                        print(f"Image path not found: {piece_image_path}")
+                        raise FileNotFoundError(f"Image path not found (map_board): {path}")
                     except Exception as e:
-                        raise Exception(e)
+                        raise e
                     piece.set_alpha(0)
 
                 piece = pygame.transform.scale(piece, (int(self.height / 8 / 1.25), int(self.height / 8 / 1.25)))

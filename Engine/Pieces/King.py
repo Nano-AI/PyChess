@@ -1,9 +1,5 @@
 from Engine.Pieces.Piece import Piece
-
-"""
-After done making the piece, go to Engine/Board.py and go to the get_piece() function, and add your piece there.
-Then, go to Board/Board.py and go to the get_image() function and add you image there.
-"""
+from Engine.Board import Board
 
 
 class King(Piece):
@@ -20,51 +16,41 @@ class King(Piece):
         if abs(x - self.x) > 1 or abs(y - self.y) > 1:
             return False, "Moving too far"
 
-        spots = []
-        # print(len(self.board.board) - 1)
-        # print(len(self.board.board[0]) - 1)
-        for row in self.board.board:
-            for piece in row:
-                if piece.type != ' ' and piece.side != self.side:
-                    try:
-                        piece.get_guarding_spots()
-                        # spots.append()
-                    except Exception as e:
-                        print(piece.x, piece.y, piece.type)
-                        # print(e)
-        #     for x1 in range(0, len(self.board.board) - 1):
-        #         print(x1)
-        #         for y1 in range(0, len(self.board.board[x1]) - 1):
-        #             print(y1)
-        #             if self.board.board[x1][y1].type != ' ' and self.board.board[x1][y1].side != self.side:
-        #                 spots.append(self.board.board[x1][y1].get_guarding_spots())
+        in_check, piece = self.guarded(self.x, self.y)
 
-        # print("asdfasdf")
-        # for grids in spots:
-        #     for grid in grids:
-        #         print('---')
-        #         for row in grid:
-        #             print(row)
+        if in_check:
+            return False, f"{piece.type} can go there!"
 
         return True, "Success"
 
+    def guarded(self, x, y):
+        """This function checks if a piece is guarding the spot passed in, if it is, then it's going to return True
+        and the piece, other wise it is going to return False and None"""
+        guarded = False
+        for row in self.board.board:
+            for piece in row:
+                if piece.type == ' ' or piece.side == self.side:
+                    continue
+
+                guarding = piece.get_guarding_spots()
+
+                if guarding is None:
+                    guarded, _ = piece.is_valid_move(x, y)
+                else:
+                    for spot in guarding:
+                        if spot == (x, y):
+                            guarded = True
+
+                if guarded:
+                    return True, piece
+        return False, None
+
     def get_guarding_spots(self):
-        """
-        . . .
-        . k .
-        . . .
-        """
         spots = []
         spots_around = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]
 
-        for x in range(0, len(self.board.board)):
-            spots.append([])
-            for y in range(0, len(self.board.board[x])):
-                spots[x].append(0)
-
         for sx, sy in spots_around:
-            spots[self.y + sy][self.x + sx] = 1
-        # print('-----------')
-        # for arr in [ele for ele in reversed(spots)]:
-        #     print(arr)
-        return [ele for ele in reversed(spots)]
+            if 0 <= self.x + sx <= 8 and 0 <= self.y + sy <= 8:  # to make sure that cords don't go out of bounds
+                spots.append((self.x + sx, self.y + sy))
+
+        return spots
