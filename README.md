@@ -12,8 +12,7 @@ Make sure you have Python 3 installed, then open the folder in a terminal and ru
 you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 
 <details>
-    <summary>Dev Notes</summary> 
-
+    <summary>Dev Notes</summary>
     ## Things to add
     - [ ] Check detection
     - [ ] Check**mate** detection
