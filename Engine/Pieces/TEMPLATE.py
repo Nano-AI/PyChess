@@ -15,3 +15,12 @@ class Template(Piece):
         if self.board.get_logical_spot(x, y).side == self.side:
             return False, "Capturing own piece"
         return True, "Success"
+
+    def get_guarding_spots(self):
+        spots = []
+        for x in range(0, len(self.board.board)):
+            spots.append([])
+            for y in range(0, len(self.board.board[x])):
+                spots[x].append(0)
+
+        return [ele for ele in reversed(spots)]

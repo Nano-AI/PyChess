@@ -22,3 +22,34 @@ class Knight(Piece):
         if abs(slope) != 2 and abs(slope) != 0.5:
             return False, "Not valid move"
         return True, "Success"
+
+    def get_guarding_spots(self):
+        spots = []
+
+        for x in range(0, len(self.board.board)):
+            spots.append([])
+            for y in range(0, len(self.board.board[x])):
+                spots[x].append(0)
+
+        """
+        . . . . . . .
+        . . x . x . .
+        . x . . . x .
+        . . . k . . .
+        . x . . . x .
+        . . x . x . .
+        . . . . . . .
+        """
+
+        move_spots = [(1, 2), (-1, 2), (1, -2), (-1, -2)]
+        x, y = self.y, self.x
+        for sx, sy in move_spots:
+            spots[x + sx][y + sy] = 1
+            spots[x + sy][y + sx] = 1
+
+        # print('-----------')
+        # for arr in [ele for ele in reversed(spots)]:
+        #     print(arr)
+
+        return [ele for ele in reversed(spots)]
+

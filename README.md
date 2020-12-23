@@ -14,7 +14,7 @@ you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 - [x] Turn system
 - [x] Pawns
 - [x] Knights
-- [X] Bishops
+- [x] Bishops
 - [X] Rooks 
 - [x] Queen
 - [ ] King
@@ -24,6 +24,12 @@ you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 - [ ] Better UI
 - [ ] En Passant
 - [x] Dots to show where you can move
+- [x] Pawn - Get Guarding Spots
+- [x] Knight - Get Guarding Spots
+- [x] Bishop - Get Guarding Spots
+- [x] Rooks  - Get Guarding Spots
+- [x] Queen - Get Guarding Spots
+- [x] King - Get Guarding Spots
 
 ### Things to do
 - [ ] Clean up Pawn.py

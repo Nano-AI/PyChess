@@ -25,6 +25,11 @@ class BoardGUI:
 
         self.piece_images, self.piece_rectangles = None, None
         self.centers = DrawBoard(self.screen, self.size, self.selected, self.turn)
+
+        self.protected_spots = []
+
+        self.fill_protected_spots()
+
         pygame.display.set_caption("Chess - Nano-AI")
 
     def run(self):
@@ -160,7 +165,8 @@ class BoardGUI:
             'r': 'Rook.png',
             'b': 'Bishop.png',
             'h': 'Knight.png',
-            'q': 'Queen.png'
+            'q': 'Queen.png',
+            'k': 'King.png'
         }
         try:
             return self.get_image_path(piece) + pieces[piece_name]
@@ -185,3 +191,6 @@ class BoardGUI:
         x, y = x_y
         # print(f"x, y: {x_y} new spot: ({y}, {len(self.board.board_setup[0]) - x - 1})")
         return y, len(self.board.board_setup[0]) - x - 1
+
+    def fill_protected_spots(self):
+        pass

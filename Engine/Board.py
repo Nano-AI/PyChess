@@ -2,10 +2,9 @@ from typing import List
 
 from Engine.Errors import *
 from Engine.Pieces.Empty import *
-from Engine.Pieces.Pawn import *
-from Engine.Pieces.Rook import *
-from Engine.Pieces.Bishop import *
+from Engine.Pieces.King import *
 from Engine.Pieces.Knight import *
+from Engine.Pieces.Pawn import *
 from Engine.Pieces.Queen import *
 
 
@@ -39,15 +38,25 @@ class Board:
         . - Empty Spot
           - Empty spot
         """
+        # self.board_setup = [
+        #     ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
+        #     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
+        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
+        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
+        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
+        #     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+        #     ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r']
+        # ]
         self.board_setup = [
-            ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
-            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+            ['R', 'H', 'B', '.', 'K', '.', 'H', 'R'],
+            ['P', 'P', 'P', '.', '.', '.', 'P', 'P'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-            ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r']
+            ['p', 'p', 'p', '.', '.', '.', 'p', 'p'],
+            ['r', 'h', 'b', '.', 'k', '.', 'h', 'r']
         ]
         self.board: List[List[Piece]] = self.setup_board()
 
@@ -111,7 +120,8 @@ class Board:
         return board
 
     def convert_to_logical(self, x, y):
-        return x, len(self.board_setup) - y - 1
+        # return self.board[len(self.board[int(x)]) - int(y) - 1][int(x)]
+        return int(x), 8 - int(y) - 1
 
     def get_piece(self, s, side, pos):
         x, y = pos
@@ -125,4 +135,6 @@ class Board:
             return Knight(self, side, x, y)
         if s.lower() == 'q':
             return Queen(self, side, x, y)
+        if s.lower() == 'k':
+            return King(self, side, x, y)
         return Empty(self, x, y)

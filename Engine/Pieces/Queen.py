@@ -1,4 +1,5 @@
-from Engine.Pieces.Piece import Piece
+from Engine.Pieces.Bishop import *
+from Engine.Pieces.Rook import *
 
 
 class Queen(Piece):
@@ -7,49 +8,40 @@ class Queen(Piece):
         self.type = 'q'
 
     def is_valid_move(self, x, y):
+        self.get_guarding_spots()
         if self.board.get_logical_spot(x, y).side == self.side:
             return False, "Capturing own piece"
         if self.x != x and self.y != y and abs((y - self.y) / (x - self.x)) != 1:
             return False, "Illegal move"
 
         if self.x != x and self.y != y and abs((y - self.y) / (x - self.x)) == 1:
-            dy = (y - self.y)
-            dx = (x - self.x)
+            valid, reason = Bishop(self.board, self.side, self.x, self.y).is_valid_move(x, y)
+            if not valid:
+                return valid, reason
 
-            ud = 1 if dy > 0 else -1
-            rl = 1 if dx > 0 else -1
-
-            if dy > 0:  # Moving up
-                for i in range(1, abs(dx)):
-                    if self.board.get_logical_spot(self.x + (i * rl), self.y + i).type != ' ':
-                        return False, "Object blocking path"
-
-            if dy < 0:  # Moving down
-                for i in range(1, abs(dy)):
-                    if self.board.get_logical_spot(self.x + i, self.y + (i * ud)).type != ' ':
-                        return False, "Object blocking path"
-
-        else:
-            if x == self.x:  # Moving up/down
-                dy = 1 if self.y < y else -1
-                i = self.y + dy
-                while i != y:
-                    if self.board.get_logical_spot(self.x, i).type != ' ':
-                        return False, "Object blocking way"
-                    i += dy
-
-            elif y == self.y:  # Moving right/left
-                dx = 1 if self.x < x else -1
-                i = self.x + dx
-                while i != x:
-                    print(i)
-                    if self.board.get_logical_spot(i, self.y).type != ' ':
-                        return False, "Object blocking way"
-                    i += dx
-
-            else:
-                return False, "Moving dumb way"
-
-            return True, "Success"
+        if self.x == x or self.y == y:
+            valid, reason = Rook(self.board, self.side, self.x, self.y).is_valid_move(x, y)
+            if not valid:
+                return valid, reason
 
         return True, "Success"
+
+    def get_guarding_spots(self):
+        spots = []
+        for x in range(0, len(self.board.board)):
+            spots.append([])
+            for y in range(0, len(self.board.board[x])):
+                spots[x].append(0)
+
+        rook_spots = Rook(self.board, self.side, self.x, self.y).get_guarding_spots()
+        bishop_spots = Bishop(self.board, self.side, self.x, self.y).get_guarding_spots()
+
+        for x in range(len(spots)):
+            for y in range(len(spots[x])):
+                spots[x][y] = 1 if rook_spots[x][y] == 1 or bishop_spots[x][y] == 1 else 0
+
+        print('-----------')
+        for arr in spots:
+            print(arr)
+
+        return spots
