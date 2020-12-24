@@ -1,10 +1,8 @@
 from typing import List
 
-from Engine.Board import Board
-
 
 class Piece:
-    def __init__(self, board: Board, side: chr, x: int, y: int):
+    def __init__(self, board, side: chr, x: int, y: int):
         self.x = x
         self.y = y
         self.side = side

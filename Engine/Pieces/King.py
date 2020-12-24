@@ -1,10 +1,11 @@
 from Engine.Pieces.Piece import Piece
-from Engine.Board import Board
+from copy import copy
 
 
 class King(Piece):
     def __init__(self, board, side: chr, x: int, y: int):
         super().__init__(board, side, x, y)
+        self.checked = False
         self.guarding_spots = []
         self.available_moves = []
         self.type = 'k'
@@ -16,9 +17,9 @@ class King(Piece):
         if abs(x - self.x) > 1 or abs(y - self.y) > 1:
             return False, "Moving too far"
 
-        in_check, piece = self.guarded(self.x, self.y)
+        can_go, piece = self.guarded(x, y)
 
-        if in_check:
+        if can_go:
             return False, f"{piece.type} can go there!"
 
         return True, "Success"

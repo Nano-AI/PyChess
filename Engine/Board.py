@@ -39,27 +39,28 @@ class Board:
           - Empty spot
         """
 
+        self.board_setup = [
+            ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
+            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+            ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r']
+        ]
+
         # self.board_setup = [
-        #     ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
-        #     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+        #     ['.', '.', '.', '.', 'K', '.', '.', '.'],
+        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
+        #     ['r', '.', '.', '.', 'p', 'k', '.', '.'],
+        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
+        #     ['.', 'R', '.', '.', '.', '.', '.', '.'],
         #     ['.', '.', '.', '.', '.', '.', '.', '.'],
         #     ['.', '.', '.', '.', '.', '.', '.', '.'],
-        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
-        #     ['.', '.', '.', '.', '.', '.', '.', '.'],
-        #     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-        #     ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r']
+        #     ['.', '.', '.', '.', '.', '.', '.', '.']
         # ]
 
-        self.board_setup = [
-            ['.', '.', '.', '.', 'K', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['r', '.', '.', '.', 'p', 'k', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', 'k', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.']
-        ]
         self.board: List[List[Piece]] = self.setup_board()
 
     def print_board(self):
@@ -83,21 +84,23 @@ class Board:
     def get_logical_spot(self, x, y) -> Piece:
         return self.board[len(self.board[int(x)]) - int(y) - 1][int(x)]
 
-    def move(self, x, y, x1, y1):
+    def move(self, x, y, x1, y1, checking=False):
         valid = False
         reason = ""
-        try:
-            valid, reason = self.get_logical_spot(x, y).is_valid_move(x1, y1)
-        except Exception as e:
-            raise Exception(e)
-        if self.get_logical_spot(x, y).type == ' ':
-            raise IllegalMove(f"An empty box is trying to be moved at ({x}, {y}).")
-        if self.get_logical_spot(x1, y1).type == 'k':
-            raise IllegalMove("King is trying to be captured")
-        if not valid:
-            piece = self.get_logical_spot(x, y)
-            raise IllegalMove(f"{piece.type} at ({piece.x}, {piece.y}) is trying to move to ({x1}, {y1})."
-                              f" It is currently at ({x}, {y})\nReason: {reason}")
+        if not checking:
+            try:
+                # print(self.get_logical_spot(x, y).is_valid_move(x1, y1))
+                valid, reason = self.get_logical_spot(x, y).is_valid_move(x1, y1)
+            except Exception as e:
+                raise Exception(e)
+            if self.get_logical_spot(x, y).type == ' ':
+                raise IllegalMove(f"An empty box is trying to be moved at ({x}, {y}).")
+            if self.get_logical_spot(x1, y1).type == 'k':
+                raise IllegalMove("King is trying to be captured")
+            if not valid:
+                piece = self.get_logical_spot(x, y)
+                raise IllegalMove(f"{piece.type} at ({piece.x}, {piece.y}) is trying to move to ({x1}, {y1})."
+                                  f" It is currently at ({x}, {y})\nReason: {reason}")
         self.change_logical_spot(x1, y1, self.get_logical_spot(x, y))
         self.change_logical_spot(x, y, Empty(self, x, y))
         if self.get_logical_spot(x1, y1).type == 'p':

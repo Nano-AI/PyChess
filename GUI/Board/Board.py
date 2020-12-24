@@ -58,13 +58,9 @@ class BoardGUI:
                                         try:
                                             self.board.move(x, y, x1, y1)
                                             self.turn = 'b' if self.turn == 'w' else 'w'
-                                            # if self.turn == 'w':
-                                            #     self.turn = 'b'
-                                            # else:
-                                            #     self.turn = 'w'
                                             self.update_board()
-                                        except IllegalMove:
-                                            print("Sorry, but the move you played is illegal.\n")
+                                        except IllegalMove as e:
+                                            print("Sorry, but the move you played is illegal.\n", e)
                                         except Exception as e:
                                             raise e
                                     self.selected = None
@@ -92,11 +88,12 @@ class BoardGUI:
                 for j in range(0, 8):
                     ii, ij = self.convert_to_logical((i, j))
                     try:
-                        valid, reason = spot.is_valid_move(ii, ij)
-                        if valid:
-                            possible_moves.append((i, j))
-                    except Exception:
-                        pass
+                        if spot.type != ' ':
+                            valid, reason = spot.is_valid_move(ii, ij)
+                            if valid:
+                                possible_moves.append((i, j))
+                    except Exception as e:
+                        raise e
             DrawBoard(self.screen, self.size, self.selected, self.turn, moves=possible_moves)
         else:
             DrawBoard(self.screen, self.size, self.selected, self.turn)
