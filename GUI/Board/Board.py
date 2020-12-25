@@ -3,6 +3,8 @@ from GUI.Board.DrawBoard import *
 import pygame
 import os
 from Engine.Errors import *
+from Engine.Pieces.King import King
+import pickle
 
 
 class BoardGUI:
@@ -31,6 +33,9 @@ class BoardGUI:
 
         self.fill_protected_spots()
 
+        self.white_checked = False
+        self.black_checked = False
+
         pygame.display.set_caption("Chess - Nano-AI")
 
     def run(self):
@@ -56,6 +61,7 @@ class BoardGUI:
                                         x, y = self.convert_to_logical(self.selected)
                                         x1, y1 = self.convert_to_logical(self.moving_to)
                                         try:
+                                            """This is where the piece gets moved in the end"""
                                             self.board.move(x, y, x1, y1)
                                             self.turn = 'b' if self.turn == 'w' else 'w'
                                             self.update_board()
@@ -92,6 +98,15 @@ class BoardGUI:
                             valid, reason = spot.is_valid_move(ii, ij)
                             if valid:
                                 possible_moves.append((i, j))
+
+                        """This is where I check if the king has been checked"""
+                        if spot.type == 'k':
+                            king = self.board.get_logical_spot(ii, ij)
+                            if king.side == 'w':
+                                self.white_checked = king.checked()
+                            elif king.side == 'b':
+                                self.black_checked = king.checked()
+
                     except Exception as e:
                         raise e
             DrawBoard(self.screen, self.size, self.selected, self.turn, moves=possible_moves)

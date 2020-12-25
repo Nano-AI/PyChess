@@ -46,6 +46,10 @@ class King(Piece):
                     return True, piece
         return False, None
 
+    def checked(self):
+        checked, _ = self.guarded(self.x, self.y)
+        return checked
+
     def get_guarding_spots(self):
         spots = []
         spots_around = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]
