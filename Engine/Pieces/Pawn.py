@@ -8,7 +8,6 @@ class Pawn(Piece):
         self.start_move = True
 
     def is_valid_move(self, x, y):
-        self.get_guarding_spots()
         if y - self.y < 0 and self.side == 'w':  # Checks if move is backwards or same spot
             return False, "Moving backwards or going in the same spot"
         if y - self.y > 0 and self.side == 'b':
@@ -37,6 +36,10 @@ class Pawn(Piece):
             return False, "Moving to narnia"
         if abs(self.y - y) > 1 and not self.start_move:
             return False, "Moving to narnia"
+
+        if abs(self.y - y) > 1 and abs(self.x - x) > 0:
+            return False, "Moving to narnia"
+
         ud = 1 if self.side == 'w' else -1
         if abs(y - self.y) == 2 and self.board.get_logical_spot(self.x, self.y + ud).type != ' ':
             return False, "Trying to move 2 spaces up when there's a pieces above it."

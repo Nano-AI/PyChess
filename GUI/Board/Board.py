@@ -31,8 +31,6 @@ class BoardGUI:
 
         self.protected_spots = []
 
-        self.fill_protected_spots()
-
         self.white_checked = False
         self.black_checked = False
 
@@ -61,10 +59,21 @@ class BoardGUI:
                                         x, y = self.convert_to_logical(self.selected)
                                         x1, y1 = self.convert_to_logical(self.moving_to)
                                         try:
-                                            """This is where the piece gets moved in the end"""
-                                            self.board.move(x, y, x1, y1)
-                                            self.turn = 'b' if self.turn == 'w' else 'w'
-                                            self.update_board()
+                                            """This is where the piece gets moved when a player clicks on it and 
+                                            selects a spot"""
+                                            # self.board.move(x, y, x1, y1)
+                                            if self.black_checked or self.white_checked:
+                                                can, error = self.check_move(x, y, x1, y1)
+                                                if can:
+                                                    self.move(x, y, x1, y1)
+                                                else:
+                                                    raise IllegalMove(error)
+
+                                            elif self.turn == 'b' and not self.black_checked:
+                                                self.move(x, y, x1, y1)
+
+                                            elif self.turn == 'w' and not self.white_checked:
+                                                self.move(x, y, x1, y1)
                                         except IllegalMove as e:
                                             print("Sorry, but the move you played is illegal.\n", e)
                                         except Exception as e:
@@ -100,12 +109,13 @@ class BoardGUI:
                                 possible_moves.append((i, j))
 
                         """This is where I check if the king has been checked"""
-                        if spot.type == 'k':
+                        if self.board.get_logical_spot(ii, ij).type == 'k':
                             king = self.board.get_logical_spot(ii, ij)
+                            checked, _ = king.is_checked()
                             if king.side == 'w':
-                                self.white_checked = king.checked()
+                                self.white_checked = checked
                             elif king.side == 'b':
-                                self.black_checked = king.checked()
+                                self.black_checked = checked
 
                     except Exception as e:
                         raise e
@@ -205,8 +215,17 @@ class BoardGUI:
 
     def convert_to_logical(self, x_y: tuple):
         x, y = x_y
-        # print(f"x, y: {x_y} new spot: ({y}, {len(self.board.board_setup[0]) - x - 1})")
+        # return x, len(self.board.board_setup[0]) - y - 1
         return y, len(self.board.board_setup[0]) - x - 1
 
-    def fill_protected_spots(self):
-        pass
+    def check_move(self, x: int, y: int, to_x: int, to_y: int):
+        can, error = self.board.get_logical_spot(x, y).is_valid_move(to_x, to_y)
+        if not can:
+            return False, error
+        return True, None
+        # self.board.move()
+
+    def move(self, x: int, y: int, x1: int, y1: int):
+        self.board.move(x, y, x1, y1)
+        self.turn = 'b' if self.turn == 'w' else 'w'
+        self.update_board()

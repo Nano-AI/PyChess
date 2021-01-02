@@ -22,6 +22,18 @@ class King(Piece):
         if can_go:
             return False, f"{piece.type} can go there!"
 
+        piece, prev_x, prev_y = self.board.get_logical_spot(x, y), self.x, self.y
+
+        self.board.move(self.x, self.y, x, y, checking=True)
+
+        can_go, piece_check = self.is_checked()
+
+        self.board.move(self.x, self.y, prev_x, prev_y, checking=True)
+        self.board.set(piece, x, y)
+
+        if can_go:
+            return False, f"{piece.type} can go there!"
+
         return True, "Success"
 
     def guarded(self, x, y):
@@ -46,9 +58,10 @@ class King(Piece):
                     return True, piece
         return False, None
 
-    def checked(self):
-        checked, _ = self.guarded(self.x, self.y)
-        return checked
+    def is_checked(self):
+        checked, piece = self.guarded(self.x, self.y)
+        self.checked = checked
+        return checked, piece
 
     def get_guarding_spots(self):
         spots = []

@@ -40,14 +40,14 @@ class Board:
         """
 
         self.board_setup = [
-            ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
-            ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+            ['R', 'H', 'B', 'Q', ' ', 'B', 'H', 'R'],
+            ['P', 'P', 'P', 'K', ' ', 'P', 'P', 'P'],
+            ['.', '.', '.', '.', '.', '.', '.', '.'],
+            ['.', '.', '.', 'p', 'p', '.', 'b', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
             ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['.', '.', '.', '.', '.', '.', '.', '.'],
-            ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-            ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r']
+            ['p', 'p', 'p', ' ', ' ', 'p', 'p', 'p'],
+            ['r', 'h', ' ', 'q', 'k', 'b', 'h', 'r']
         ]
 
         # self.board_setup = [
@@ -126,6 +126,7 @@ class Board:
 
     def convert_to_logical(self, x, y):
         # return self.board[len(self.board[int(x)]) - int(y) - 1][int(x)]
+        # return int(x), 8 - int(y) - 1
         return int(x), 8 - int(y) - 1
 
     def get_piece(self, s, side, pos):
@@ -143,3 +144,11 @@ class Board:
         if s.lower() == 'k':
             return King(self, side, x, y)
         return Empty(self, x, y)
+
+    def convert_to_array(self, x, y):
+        return abs(y - len(self.board_setup[0])) - 1, x
+        # return abs(y - len(self.board.board_setup[0])) - 1, x
+
+    def set(self, piece, x, y):
+        x1, y1 = self.convert_to_array(x, y)
+        self.board[x1][y1] = piece
