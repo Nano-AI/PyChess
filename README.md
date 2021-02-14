@@ -20,6 +20,8 @@ you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 - [ ] Better UI
 - [ ] En Passant
 - [ ] Tie system
+- [ ] Reformat code
+- [ ] Fix bugs
 ### Done
 - [x] Game UI
 - [x] Turn system
@@ -36,9 +38,6 @@ you're on Windows or `pip3 install -r requirements.txt` if you're on Linux.
 - [x] Queen - Get Guarding Spots
 - [x] King - Get Guarding Spots
 - [x] King
-### Extra things to do
-- [ ] Clean up Pawn.py
-- [ ] Fix random bugs
 
 ## Credits
 - Chess piece images from here: [Wikipedia Commons](https://commons.wikimedia.org/wiki/Category:PNG_chess_pieces/Standard_transparent)
