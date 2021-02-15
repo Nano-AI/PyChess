@@ -34,6 +34,9 @@ class BoardGUI:
         self.white_checked = False
         self.black_checked = False
 
+        self.black_x_y = None
+        self.white_x_y = None
+
         pygame.display.set_caption("Chess - Nano-AI")
 
     def run(self):
@@ -62,6 +65,7 @@ class BoardGUI:
                                             """This is where the piece gets moved when a player clicks on it and 
                                             selects a spot"""
                                             # self.board.move(x, y, x1, y1)
+                                            print(self.black_checked, self.white_checked)
                                             if self.black_checked or self.white_checked:
                                                 can, error = self.check_move(x, y, x1, y1)
                                                 if can:
@@ -114,8 +118,10 @@ class BoardGUI:
                             checked, _ = king.is_checked()
                             if king.side == 'w':
                                 self.white_checked = checked
+                                self.white_x_y = self.convert_to_logical((ii, ij))
                             elif king.side == 'b':
                                 self.black_checked = checked
+                                self.black_x_y = self.convert_to_logical((ii, ij))
 
                     except Exception as e:
                         raise e
@@ -222,6 +228,14 @@ class BoardGUI:
         can, error = self.board.get_logical_spot(x, y).is_valid_move(to_x, to_y)
         if not can:
             return False, error
+        if self.board.get_logical_spot(x, y).type == 'w':
+            kx, ky = self.white_x_y
+        else:
+            kx, ky = self.black_x_y
+        piece = self.board.get_logical_spot(kx, ky)
+        if piece.type != 'k' and not piece.move_piece_check(x, y):
+            DrawBoard(self.screen, self.size, self.selected, self.turn, illegal_move=f"The {piece.side} king is in check!")
+
         return True, None
         # self.board.move()
 

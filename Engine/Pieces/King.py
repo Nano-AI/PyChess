@@ -31,6 +31,9 @@ class King(Piece):
         self.board.move(self.x, self.y, prev_x, prev_y, checking=True)
         self.board.set(piece, x, y)
 
+        if self.is_checked():
+            return False, "The king is checked!"
+
         if can_go:
             return False, f"{piece.type} can go there!"
 
@@ -72,3 +75,16 @@ class King(Piece):
                 spots.append((self.x + sx, self.y + sy))
 
         return spots
+
+    def move_piece_check(self, x, y):
+        piece, prev_x, prev_y = self.board.get_logical_spot(x, y), self.x, self.y
+
+        self.board.move(self.x, self.y, x, y, checking=True)
+
+        can_go, piece_check = self.is_checked()
+
+        self.board.move(self.x, self.y, prev_x, prev_y, checking=True)
+        self.board.set(piece, x, y)
+
+        if not can_go:
+            return False, "The king is checked!"

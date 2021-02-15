@@ -47,6 +47,7 @@ def DrawBoard(game_display, size, selected, turn, illegal_move="", moves=None):
         cnt -= 1
 
     turn_font = pygame.font.SysFont(pygame.font.get_default_font(), int(width / 35))
+    move_font = pygame.font.SysFont(pygame.font.get_default_font(), int(width / 40))
 
     if turn == 'w':
         turn_text = "White"
@@ -56,12 +57,17 @@ def DrawBoard(game_display, size, selected, turn, illegal_move="", moves=None):
         raise Exception("Turn is not black or white")
     turn = turn_font.render(f"{turn_text}'s Turn", True, black, white)
     turn_box = turn.get_rect()
+    move = turn_font.render(illegal_move, True, black, white)
+    move_box = move.get_rect()
 
     # turn_box.center = (width * boardLength, 0)
     turn_x, turn_y = turn_box.size
+    move_x, move_y = move_box.size
     turn_box.center = ((boardLength * size) + (turn_x / 2) + (size / 5), (turn_y / 2) + (size / 5))
+    move_box.center = ((boardLength * size) + (move_x / 2) + (size / 5), (move_y / 2) + (size / 5))
 
     game_display.blit(surface, (0, 0))
     game_display.blit(turn, turn_box)
+    game_display.blit(move, move_box)
 
     return centers
